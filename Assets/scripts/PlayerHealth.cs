@@ -24,7 +24,7 @@ public class PlayerHealth : MonoBehaviour
     }
     public void UpdateHealthUI()
     {
-        Debug.Log(health);
+        
 
     }
 

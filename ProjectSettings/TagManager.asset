@@ -10,11 +10,12 @@ TagManager:
   - 2nd Life
   - 3rd Life
   - Wave Spawner
+  - Baby
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - WhatIsEnemy
   - Water
   - UI
   - Interactable

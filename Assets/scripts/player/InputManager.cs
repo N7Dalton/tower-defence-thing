@@ -5,10 +5,12 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+#pragma warning disable 649
     public InputActions playerInput;
 
     private PlayerMotor motor;
     private PlayerLook look;
+   
     // Start is called before the first frame update
     void Awake()
     {
