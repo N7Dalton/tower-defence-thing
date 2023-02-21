@@ -14,7 +14,7 @@ public class WaveSpawner : MonoBehaviour
     public GameObject secondlife;
     public GameObject firstlife;
     public int lives = 3;
-    bool DoorOpened = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,29 +24,41 @@ public class WaveSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(countdownTimer <= 0f)
+        if (GameObject.Find("RedButton").GetComponent<startButton>().buttonPressed == false)
         {
-            spawnwave();
-            countdownTimer = timeBetweenRounds;
+
+            if (countdownTimer <= 0f)
+            {
+                spawnwave();
+                countdownTimer = timeBetweenRounds;
+            }
+            countdownTimer -= Time.deltaTime;
+
         }
-        countdownTimer -= Time.deltaTime;
-      
-      
     }
     void spawnwave()
     {
-        
-        for (int i = 0;i < waveNumber; i++)
+
+        for (int i = 0; i < waveNumber; i++)
         {
             spawnBABY();
         }
+        for (int i = 7; i < waveNumber;)
+        {
+            spawnBABY();
+        }
+
         waveNumber++;
     }
     void spawnBABY()
     {
-        randomspawnposition = new Vector3(Random.Range(8, -8), 1, -17);
-        Instantiate(Babytransform, randomspawnposition, Quaternion.identity);
- 
+        if(waveNumber < 7)
+        {
+            randomspawnposition = new Vector3(Random.Range(8, -8), 0.7f, -17);
+            Instantiate(Babytransform, randomspawnposition, Quaternion.identity);
+
+        }
+
     }
     public void lostlife()
     {

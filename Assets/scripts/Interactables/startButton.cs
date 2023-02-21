@@ -7,7 +7,7 @@ public class startButton : Interactable
     public GameObject button;
     [SerializeField]
     private GameObject door;
-    private bool buttonPressed;
+    public bool buttonPressed = true;
     // Start is called before the first frame update
     void Start()
     {

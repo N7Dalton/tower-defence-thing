@@ -342,6 +342,7 @@ MonoBehaviour:
   baby: {fileID: 695015580271120969}
   Base: {fileID: 0}
   wavespawner: {fileID: 0}
+  roundistrue: 0
 --- !u!114 &-8071879221105692307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbc975882468004c976ea7c338f94ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 0
   frontHealthBar: {fileID: 0}
   backHealthBar: {fileID: 0}
 --- !u!1 &850440217702920742
