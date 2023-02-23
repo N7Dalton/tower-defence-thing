@@ -5,11 +5,12 @@ using TMPro;
 
 public class GunSystem : MonoBehaviour
 {
+    public int ammoBoxRefill;
     public int damage;
     public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
     public bool allowButtonHold;
-    int bulletsLeft, bulletsShot;
+    public int bulletsLeft, bulletsShot;
 
     //bools 
     bool shooting, readyToShoot, reloading;
@@ -30,26 +31,35 @@ public class GunSystem : MonoBehaviour
     {
         bulletsLeft = magazineSize;
         readyToShoot = true;
+        
+
+
     }
     private void Update()
     {
         MyInput();
-
-        //SetText
-        text.SetText(bulletsLeft + " / " + magazineSize);
+        if(GameObject.Find("RedButton").GetComponent<startButton>().buttonPressed == false)
+        {
+            //SetText
+            text.SetText(bulletsLeft + " / " + magazineSize);
+        }
+        
     }
     private void MyInput()
     {
-        if (allowButtonHold) shooting = Input.GetKey(KeyCode.Mouse0);
-        else shooting = Input.GetKeyDown(KeyCode.Mouse0);
-
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !reloading) Reload();
-
-        //Shoot
-        if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+        if (GameObject.Find("MP5") != null)
         {
-            bulletsShot = bulletsPerTap;
-            Shoot();
+            if (allowButtonHold) shooting = Input.GetKey(KeyCode.Mouse0);
+            else shooting = Input.GetKeyDown(KeyCode.Mouse0);
+
+            if (Input.GetKeyDown(KeyCode.R) && !reloading) Reload();
+
+            //Shoot
+            if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+            {
+                bulletsShot = bulletsPerTap;
+                Shoot();
+            }
         }
     }
     private void Shoot()
@@ -64,14 +74,14 @@ public class GunSystem : MonoBehaviour
         Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
 
         //RayCast
-        if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
+        if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy) && GameObject.Find("RedButton").GetComponent<startButton>().buttonPressed == false)
         {
-            Debug.Log(rayHit.collider.name);
 
            if(rayHit.collider.CompareTag("Baby"))
             {
                 DestroyImmediate(rayHit.collider.gameObject);
             }
+           
         }
 
         //ShakeCamera
@@ -99,7 +109,10 @@ public class GunSystem : MonoBehaviour
     }
     private void ReloadFinished()
     {
-        bulletsLeft = magazineSize;
+        int bulletsToSubtract = 25 - bulletsLeft;
+        bulletsLeft += bulletsToSubtract;
+        magazineSize -= bulletsToSubtract;
         reloading = false;
+        
     }
 }
