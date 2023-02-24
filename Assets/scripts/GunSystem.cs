@@ -43,7 +43,7 @@ public class GunSystem : MonoBehaviour
             //SetText
             text.SetText(bulletsLeft + " / " + magazineSize);
         }
-        
+      
     }
     private void MyInput()
     {
@@ -115,4 +115,5 @@ public class GunSystem : MonoBehaviour
         reloading = false;
         
     }
+  
 }

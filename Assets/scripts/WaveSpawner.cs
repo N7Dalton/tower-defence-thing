@@ -33,31 +33,32 @@ public class WaveSpawner : MonoBehaviour
                 countdownTimer = timeBetweenRounds;
             }
             countdownTimer -= Time.deltaTime;
-
+            Debug.Log(waveNumber);
         }
     }
     void spawnwave()
     {
-
-        for (int i = 0; i < waveNumber; i++)
+        if(waveNumber < 7)
         {
-            spawnBABY();
+            for (int i = 0; i < waveNumber; i++)
+            {
+                spawnBABY();
+            }
         }
-        for (int i = 7; i < waveNumber;)
+        else
         {
-            spawnBABY();
+            for (int i = 0; i < 7; i++)
+            {
+                spawnBABY();
+            }
         }
-
         waveNumber++;
     }
     void spawnBABY()
     {
-        if(waveNumber < 7)
-        {
+      
             randomspawnposition = new Vector3(Random.Range(8, -8), 0.7f, -17);
             Instantiate(Babytransform, randomspawnposition, Quaternion.identity);
-
-        }
 
     }
     public void lostlife()
