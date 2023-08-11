@@ -6,7 +6,7 @@ public class PlayerLook : MonoBehaviour
 {
     public Camera cam;
     private float xRotation = 0f;
-
+    public PauseScript pauseScript;
     public float xSens = 30f;
     public float ySens = 30f;
 
@@ -14,13 +14,18 @@ public class PlayerLook : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //*if (pauseScript.ispaused == )
+       // {
+            
+       // }
+        //Cursor.lockState = CursorLockMode.Locked;
+       
     }
 
     public void ProcessLook(Vector2 input)
