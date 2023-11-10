@@ -33,7 +33,7 @@ public class WaveSpawner : MonoBehaviour
                 countdownTimer = timeBetweenRounds;
             }
             countdownTimer -= Time.deltaTime;
-            Debug.Log(waveNumber);
+            
         }
     }
     void spawnwave()

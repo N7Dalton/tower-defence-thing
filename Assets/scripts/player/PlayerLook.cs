@@ -24,7 +24,7 @@ public class PlayerLook : MonoBehaviour
        // {
             
        // }
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
        
     }
 

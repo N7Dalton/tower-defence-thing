@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using JetBrains.Annotations;
 
 public class GunSystem : MonoBehaviour
 {
+    public MoneyScript Moneycrip;
+
     public int ammoBoxRefill;
     public int damage;
     public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
-    public int magazineSize, bulletsPerTap;
+    public int BulletsRemaining, bulletsPerTap; //bullets remaining is number on right
     public bool allowButtonHold;
-    public int bulletsLeft, bulletsShot;
-
+    public int BulletsInMag, bulletsShot; //bulletsinmag is on left
+    public Animator ShootingAnim;
+    public GameObject MuzzleFlash;
     //bools 
     bool shooting, readyToShoot, reloading;
 
@@ -22,14 +26,14 @@ public class GunSystem : MonoBehaviour
     public LayerMask whatIsEnemy;
 
     //Graphics
-    public GameObject muzzleFlash, bulletHoleGraphic;
+    
     public Camera camShake;
     public float camShakeMagnitude, camShakeDuration;
     public TextMeshProUGUI text;
 
     private void Awake()
     {
-        bulletsLeft = magazineSize;
+        BulletsInMag = BulletsRemaining;
         readyToShoot = true;
         
 
@@ -41,7 +45,7 @@ public class GunSystem : MonoBehaviour
         if(GameObject.Find("RedButton").GetComponent<startButton>().buttonPressed == false)
         {
             //SetText
-            text.SetText(bulletsLeft + " / " + magazineSize);
+            text.SetText(BulletsInMag + " / " + BulletsRemaining);
         }
       
     }
@@ -55,7 +59,7 @@ public class GunSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R) && !reloading) Reload();
 
             //Shoot
-            if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+            if (readyToShoot && shooting && !reloading && BulletsInMag > 0)
             {
                 bulletsShot = bulletsPerTap;
                 Shoot();
@@ -65,7 +69,7 @@ public class GunSystem : MonoBehaviour
     private void Shoot()
     {
         readyToShoot = false;
-
+        ShootingAnim.SetBool("IsShooting", true);
         //Spread
         float x = Random.Range(-spread, spread);
         float y = Random.Range(-spread, spread);
@@ -80,40 +84,62 @@ public class GunSystem : MonoBehaviour
            if(rayHit.collider.CompareTag("Baby"))
             {
                 DestroyImmediate(rayHit.collider.gameObject);
+                Moneycrip.Money += 1;
             }
            
         }
-
+        MuzzleFlash.SetActive(true);
         //ShakeCamera
 
         //Graphics
-        Instantiate(bulletHoleGraphic, rayHit.point, Quaternion.Euler(0, 180, 0));
-        Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
+       
 
-        bulletsLeft--;
+        BulletsInMag--;
         bulletsShot--;
 
         Invoke("ResetShot", timeBetweenShooting);
-
-        if (bulletsShot > 0 && bulletsLeft > 0)
-            Invoke("Shoot", timeBetweenShots);
+        Debug.Log(timeBetweenShooting);
+        //if (bulletsShot > 0 && BulletsInMag > 0)
+            //Invoke("Shoot", timeBetweenShots);
     }
     private void ResetShot()
     {
+        ShootingAnim.SetBool("IsShooting", false);
         readyToShoot = true;
+        MuzzleFlash.SetActive(false);
+        
+
     }
     private void Reload()
     {
-        reloading = true;
-        Invoke("ReloadFinished", reloadTime);
+        if(BulletsRemaining > 0)
+        {
+            reloading = true;
+            Invoke("ReloadFinished", reloadTime);
+
+        }
+       
     }
     private void ReloadFinished()
     {
-        int bulletsToSubtract = 25 - bulletsLeft;
-        bulletsLeft += bulletsToSubtract;
-        magazineSize -= bulletsToSubtract;
-        reloading = false;
+        if(BulletsRemaining + BulletsInMag <= 25)
+        {
+            BulletsInMag = BulletsInMag + BulletsRemaining;
+            BulletsRemaining = 0;
+            reloading = false;
+        }
+        else
+        {
+            int bulletsToSubtract = 25 - BulletsInMag;
+            BulletsInMag += bulletsToSubtract;
+            BulletsRemaining -= bulletsToSubtract;
+            reloading = false;
+        }
+        
         
     }
-  
+  public void BUYAMMO()
+    {
+        BulletsRemaining += 25;
+    }
 }
